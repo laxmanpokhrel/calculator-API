@@ -33,4 +33,4 @@ module.exports = function splitter(exp) {
   return splittedItems;
 };
 //test purpose
-console.log(splitter("+2+(32*6+5)"));
+// console.log(splitter("2+(32*6+5)"));
