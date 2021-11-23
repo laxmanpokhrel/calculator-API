@@ -1,68 +1,36 @@
-module.exports = function splitString(expression, path) {
-  expression = "(" + expression + ")";
-  console.log("the expression for split is ::", expression);
-  if (path == 0) {
-    console.log("this is split function !!! with path 0");
-    let content = expression.split("");
-    console.log("Content:", content);
-    return content;
-  }
-
-  if (path == 1) {
-    console.log("this is split function !!! with path 1");
-    let regex = /[()*+-/^]/g;
-    let content = [];
-    let contentIndex = 0;
-    let operators = expression.match(regex);
-    console.log("operators::", operators);
-
-    for (let i = 0; i < operators.length; i++) {
-      console.log("value of I:", i);
-      if (i == 0) {
-        let a = expression.indexOf(operators[i]);
-        console.log("A::", a);
-        if (a == 0) {
-          console.log("a=0 wala if bhitra chiro!!!");
-          let ch1 = expression.substr(0, 1);
-          content[contentIndex] = ch1;
-          contentIndex++;
-          console.log(ch1);
-        } else {
-          let ch1 = expression.substr(0, a);
-          content[contentIndex] = ch1;
-          contentIndex++;
-          console.log(ch1);
-        }
+module.exports = function splitter(exp) {
+  console.log("This is split function!!!");
+  exp = "(" + exp + ")";
+  let regex = /[()*+-/^]/g;
+  let operators = exp.match(regex);
+  console.log("operators are: " + operators);
+  console.log("operators length: " + operators.length);
+  let splittedItems = [];
+  for (let i = 0; i < operators.length; i++) {
+    console.log("Iteration: " + i);
+    //at i=0 there must be an operator
+    if (i == 0) {
+      let A = exp.indexOf(operators[i]);
+      let ch1 = exp.substr(0, 1);
+      splittedItems.push(ch1);
+      exp = exp.substr(A + 1, exp.length - 1);
+    } else {
+      let A = exp.indexOf(operators[i]);
+      //if the expression still has an operator in the first place
+      if (A == 0) {
+        let ch1 = exp.substr(0, 1);
+        splittedItems.push(ch1);
+        exp = exp.substr(A + 1, exp.length - 1);
       } else {
-        console.log("Bahira ko else!!");
-        let a =  
-        let b = expression.indexOf(operators[i]);
-        console.log("A:", a);
-        console.log("B:", b);
-        let length = b - (a + 1);
-        let ch1 = expression.substr(a + 1, length);
-        content[contentIndex] = ch1;
-        contentIndex++;
-        let ch2 = expression.substr(b, 1);
-        content[contentIndex] = ch2;
-        contentIndex++;
-        console.log("CH1::", ch1);
-        console.log("CH2::", ch2);
+        let ch1 = exp.substr(0, A);
+        splittedItems.push(ch1);
+        let ch2 = exp.substr(A, 1);
+        splittedItems.push(ch2);
+        exp = exp.substr(A + 1, exp.length - (A + 1));
       }
     }
-    return content;
   }
+  return splittedItems;
 };
-// console.log(splitString("(1+2)", 1));
-/*
-split function splits on the basis of tow things.
-1. each and every letter
-    to be exact for example if your infix expression is 12+3
-    it will be splited in ['1','2','+','3']
-    This is call fine split method
-
-2. on the basis of operators
-  here the expression is split on the basis of operators also called block separation method
-  in above expmple this method will split on following way 
-  ['12','+','3']
-*/
+//test purpose
+console.log(splitter("+2+(32*6+5)"));
